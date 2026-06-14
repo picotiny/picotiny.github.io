@@ -15,26 +15,34 @@
     padding: 0;
 }
 
+html,
 body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    font-family: 'Inter', sans-serif; /* Включаем красивый шрифт Inter */
-    color: var(--text-main);
-    background-color: var(--bg-dark);
-    
-    /* Устанавливаем твой крутой космический фон: */
-    background-image: url('images/Space Cowboy Cockpit.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    
+    height: 100%;
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
+}
+
+/* 2. Обертка теперь — просто контейнер для картинки и кнопок */
+.cockpit-wrapper {
+    position: relative; /* "База" для кнопок */
+    display: inline-block;
+    line-height: 0;
+}
+
+.cockpit-image {
+    display: block;      /* Убирает возможные отступы под картинкой */
+    max-height: 100vh;   /* Картинка не больше экрана */
+    max-width: 100vw;
+    width: auto;         /* Сохраняет пропорции */
+    height: auto;
 }
 
 /* Живой размытый фон (Аврора) */
@@ -69,33 +77,27 @@ body::after {
     100% { transform: translate(80px, 50px) scale(1.2); }
 }
 
-/* Контейнер плеера (Эффект стекла) */
 .player-container {
-    background: rgba(15, 12, 22, 0.4); 
-    backdrop-filter: blur(12px);         
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 183, 0, 0.15); 
+    position: absolute;
+    top: 36%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     
-    padding: 20px 25px; 
-    border-radius: 20px;
-    width: 340px; 
+    /* Жестко фиксируем размеры, чтобы он не "дышал" */
+    width: 350px;
+    height: auto;
     
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 
-                0 0 30px rgba(157, 78, 221, 0.1); 
-    text-align: center;
-    z-index: 5;
+    /* Убираем все анимации, меняющие геометрию */
+    transition: box-shadow 0.3s ease, opacity 0.3s ease;
     
-    /* Идеальная посадка в иллюминатор */
-    position: relative;
-    transform: translateY(-105px); 
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    z-index: 100;
 }
 
 /* Исправлено: теперь ховер не ломает позицию по вертикали, а мягко подсвечивает */
 .player-container:hover {
-    transform: translateY(-108px) scale(1.01); /* Чуть-чуть приподнимается и увеличивается */
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 
-                0 0 40px rgba(255, 183, 0, 0.15);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
 }
 
 /* Обложка трека (Идеальная посадка пиксель в пиксель) */
@@ -123,6 +125,8 @@ body::after {
 .track-info {
     text-align: center;
     margin-bottom: 20px;
+    min-width: 0; 
+    width: 100%;
 }
 
 .track-title {
@@ -130,9 +134,14 @@ body::after {
     font-weight: 700;
     letter-spacing: -0.5px;
     margin-bottom: 4px;
+    
+    /* Твои настройки для многоточия */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    
+    /* Это поможет, если текст всё равно не влезает */
+    max-width: 100%;
 }
 
 .track-artist {
@@ -331,35 +340,31 @@ body::after {
 /* Обертка для бортовых систем, растянутая по фону */
 .cockpit-interface {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none; /* Пропускает клики сквозь себя */
-    z-index: 9999;        /* Ставим интерфейс ВЫШЕ всего остального */
+    z-index: 1;        /* Ставим интерфейс над изображением */
 }
 
 
 /* Твой вариант: красивый, аккуратный и "электронный" */
 #radio-toggle {
     position: absolute;
-    pointer-events: auto;  
-    
-    /* Координаты (подгоняй под свою картинку) */
-    left: 39.4%;       
-    top: 78.0%;         
+    /* Координаты привязаны к картинке */
+    left: 40.5%; 
+    top: 78.5%;
     width: 40px;
     height: 26px;
-
-    /* СТИЛИЗАЦИЯ */
+    /* Убираем странный transform, используем margin для точности */
+    margin-left: -20px; 
+    margin-top: -13px;
+    
     background: rgba(0, 0, 0, 0.3); 
     border: 4px solid rgba(0, 255, 204, 1); 
     border-radius: 4px;
     cursor: pointer;
-    outline: none;
-    transition: all 0.3s ease;
-    box-shadow: inset 0 0 5px rgba(0, 255, 204, 0.2);
-    z-index: 10; /* Чтобы она была выше других элементов */
+    z-index: 10;
 }
 
 /* Эффект при наведении (добавил чуть больше свечения) */
@@ -378,18 +383,14 @@ body::after {
 /* Электронное табло поверх родного LO-FI */
 #deck-display {
     position: absolute;
-    
-    /* ИСПРАВЛЕННЫЕ КООРДИНАТЫ ПОД ЗЕЛЕНОЕ ОКОШКО */
-    left: 48.4%;       
-    top: 73.2%;
-    
-    font-family: 'Courier New', Courier, monospace; 
-    font-weight: bold;
+    left: 48.4%;
+    top: 73.3%;
+    font-family: 'Courier New', monospace;
     font-size: 15px;
-    color: #00ffcc;    
+    color: #00ffcc;
     text-shadow: 0 0 8px #00ffcc;
-    pointer-events: none; 
-    letter-spacing: 2px;
+    pointer-events: none;
+    z-index: 10;
 }
 
 /* Класс отключения кнопок при радио */
