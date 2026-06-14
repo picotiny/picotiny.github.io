@@ -3,191 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моя Музыка - Многожанровая Коллекция</title>
+    <title>Picotiny Music</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Навигация -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">🎵 MusicHub</div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Главная</a></li>
-                <li><a href="#genres" class="nav-link">Жанры</a></li>
-                <li><a href="#albums" class="nav-link">Альбомы</a></li>
-                <li><a href="#about" class="nav-link">О сайте</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <!-- Главный герой -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Добро пожаловать на мой музыкальный сайт</h1>
-            <p>Откройте для себя музыку разных жанров в одном месте</p>
-            <button class="btn btn-primary" onclick="document.getElementById('genres').scrollIntoView({behavior: 'smooth'})">
-                Начать слушать
-            </button>
-        </div>
-    </section>
+    <div class="cockpit-interface">
+        <button id="radio-toggle" title="Переключить Режим Плеера / Радио"></button>
+        <div id="deck-display">HI-FI</div>
+    </div>
 
-    <!-- Жанры -->
-    <section id="genres" class="genres">
-        <div class="container">
-            <h2>Выберите жанр</h2>
-            <div class="genre-grid">
-                <div class="genre-card" onclick="filterByGenre('pop')">
-                    <div class="genre-icon">🎤</div>
-                    <h3>Поп</h3>
-                    <p>12 треков</p>
-                </div>
-                <div class="genre-card" onclick="filterByGenre('rock')">
-                    <div class="genre-icon">🎸</div>
-                    <h3>Рок</h3>
-                    <p>8 треков</p>
-                </div>
-                <div class="genre-card" onclick="filterByGenre('electronic')">
-                    <div class="genre-icon">🎹</div>
-                    <h3>Электроника</h3>
-                    <p>15 треков</p>
-                </div>
-                <div class="genre-card" onclick="filterByGenre('jazz')">
-                    <div class="genre-icon">🎷</div>
-                    <h3>Джаз</h3>
-                    <p>10 треков</p>
-                </div>
-                <div class="genre-card" onclick="filterByGenre('hip-hop')">
-                    <div class="genre-icon">🎙️</div>
-                    <h3>Хип-Хоп</h3>
-                    <p>9 треков</p>
-                </div>
-                <div class="genre-card" onclick="filterByGenre('acoustic')">
-                    <div class="genre-icon">🎶</div>
-                    <h3>Акустика</h3>
-                    <p>11 треков</p>
-                </div>
+    <div class="player-container">
+        <div class="cover-wrapper">
+            <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=500&q=80" id="cover" alt="Cover">
+        </div>
+
+        <div class="track-info">
+            <h2 class="track-title" id="title">Cyberpunk Drive</h2>
+            <p class="track-artist" id="artist">Picotiny Artist</p>
+        </div>
+
+        <div class="progress-area">
+            <div class="progress-bar-container" id="progress-container">
+                <div class="progress-bar" id="progress"></div>
+            </div>
+            <div class="time-info">
+                <span id="current-time">0:00</span>
+                <span id="duration">0:00</span>
             </div>
         </div>
-    </section>
 
-    <!-- Плеер -->
-    <section class="player-section">
-        <div class="container">
-            <div class="player-container">
-                <div class="player-info">
-                    <div class="album-art">
-                        <img id="albumImage" src="https://via.placeholder.com/200" alt="Обложка альбома">
-                    </div>
-                    <div class="track-info">
-                        <h3 id="trackTitle">Название трека</h3>
-                        <p id="trackArtist">Исполнитель</p>
-                        <p id="trackGenre" class="track-genre">Жанр</p>
-                    </div>
-                </div>
-
-                <div class="player-controls">
-                    <div class="progress-bar">
-                        <div id="progress" class="progress"></div>
-                        <input type="range" id="progressInput" min="0" max="100" value="0" class="progress-input">
-                    </div>
-                    <div class="time-display">
-                        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
-                    </div>
-                    <div class="controls">
-                        <button class="btn-control" onclick="previousTrack()">⏮️</button>
-                        <button class="btn-control btn-play" id="playBtn" onclick="togglePlay()">▶️</button>
-                        <button class="btn-control" onclick="nextTrack()">⏭️</button>
-                    </div>
-                    <div class="volume-control">
-                        <span>🔊</span>
-                        <input type="range" id="volumeControl" min="0" max="100" value="70" class="volume-slider">
-                    </div>
-                </div>
-            </div>
+        <div class="controls">
+            <button class="btn-nav" id="prev">|&lt;</button>
+            <button class="btn-play" id="play">▶</button>
+            <button class="btn-nav" id="next">&gt;|</button>
         </div>
-        <audio id="audioPlayer"></audio>
-    </section>
+    </div>
 
-    <!-- Альбомы -->
-    <section id="albums" class="albums">
-        <div class="container">
-            <h2>Мои альбомы</h2>
-            <div class="albums-grid">
-                <div class="album-card">
-                    <img src="https://via.placeholder.com/200" alt="Альбом 1">
-                    <h3>Альбом 1</h3>
-                    <p class="album-artist">Артист имя</p>
-                    <p class="album-year">2024</p>
-                    <button class="btn btn-small" onclick="playAlbum(1)">Слушать</button>
-                </div>
-                <div class="album-card">
-                    <img src="https://via.placeholder.com/200" alt="Альбом 2">
-                    <h3>Альбом 2</h3>
-                    <p class="album-artist">Артист имя</p>
-                    <p class="album-year">2024</p>
-                    <button class="btn btn-small" onclick="playAlbum(2)">Слушать</button>
-                </div>
-                <div class="album-card">
-                    <img src="https://via.placeholder.com/200" alt="Альбом 3">
-                    <h3>Альбом 3</h3>
-                    <p class="album-artist">Артист имя</p>
-                    <p class="album-year">2023</p>
-                    <button class="btn btn-small" onclick="playAlbum(3)">Слушать</button>
-                </div>
-                <div class="album-card">
-                    <img src="https://via.placeholder.com/200" alt="Альбом 4">
-                    <h3>Альбом 4</h3>
-                    <p class="album-artist">Артист имя</p>
-                    <p class="album-year">2023</p>
-                    <button class="btn btn-small" onclick="playAlbum(4)">Слушать</button>
-                </div>
-            </div>
+    <footer class="site-footer">
+        <div class="footer-copyright">
+            © 2026 Picotiny Music. Все права защищены.
         </div>
-    </section>
-
-    <!-- Плейлист -->
-    <section class="playlist">
-        <div class="container">
-            <h2>Текущий плейлист</h2>
-            <div class="playlist-container">
-                <div id="playlistTracks" class="tracks-list">
-                    <!-- Треки будут добавлены через JavaScript -->
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- О сайте -->
-    <section id="about" class="about">
-        <div class="container">
-            <h2>О сайте</h2>
-            <p>Этот сайт создан для демонстрации и распространения музыки различных жанров. Здесь вы найдете коллекцию треков, альбомов и плейлистов, подобранных с любовью.</p>
-            <div class="stats">
-                <div class="stat">
-                    <h3>65</h3>
-                    <p>Всего треков</p>
-                </div>
-                <div class="stat">
-                    <h3>6</h3>
-                    <p>Жанров</p>
-                </div>
-                <div class="stat">
-                    <h3>12</h3>
-                    <p>Альбомов</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Подвал -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Моя Музыка. Все права защищены.</p>
-            <div class="social-links">
-                <a href="#">VK</a>
-                <a href="#">Telegram</a>
-                <a href="#">Instagram</a>
-            </div>
+        <div class="footer-links">
+            <a href="https://t.me/arachnanotes" target="_blank" rel="noopener noreferrer" class="footer-link">Telegram</a>
         </div>
     </footer>
 

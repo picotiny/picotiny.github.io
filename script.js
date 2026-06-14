@@ -1,330 +1,297 @@
-// ========== Данные о треках ==========
-const tracks = [
-    // Поп
-    {
-        id: 1,
-        title: "Летний день",
-        artist: "The Sunnyboys",
-        genre: "pop",
-        duration: 213,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-        album: "Альбом 1",
-        cover: "https://via.placeholder.com/200/FF69B4/FFFFFF?text=Pop"
-    },
-    {
-        id: 2,
-        title: "Танцующая ночь",
-        artist: "DJ Sparkle",
-        genre: "pop",
-        duration: 195,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-        album: "Альбом 1",
-        cover: "https://via.placeholder.com/200/FF69B4/FFFFFF?text=Pop"
-    },
-    // Рок
-    {
-        id: 3,
-        title: "Каменная дорога",
-        artist: "Rock Legends",
-        genre: "rock",
-        duration: 245,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-        album: "Альбом 2",
-        cover: "https://via.placeholder.com/200/FF6347/FFFFFF?text=Rock"
-    },
-    {
-        id: 4,
-        title: "Электрический удар",
-        artist: "Thunder Road",
-        genre: "rock",
-        duration: 267,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-        album: "Альбом 2",
-        cover: "https://via.placeholder.com/200/FF6347/FFFFFF?text=Rock"
-    },
-    // Электроника
-    {
-        id: 5,
-        title: "Синтезатор света",
-        artist: "Neon Pulse",
-        genre: "electronic",
-        duration: 198,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-        album: "Альбом 3",
-        cover: "https://via.placeholder.com/200/00CED1/FFFFFF?text=Electronic"
-    },
-    {
-        id: 6,
-        title: "Битовая метаморфоза",
-        artist: "Beat Master",
-        genre: "electronic",
-        duration: 224,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-        album: "Альбом 3",
-        cover: "https://via.placeholder.com/200/00CED1/FFFFFF?text=Electronic"
-    },
-    // Джаз
-    {
-        id: 7,
-        title: "Ночной саксофон",
-        artist: "Jazz Cafe",
-        genre: "jazz",
-        duration: 289,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-        album: "Альбом 4",
-        cover: "https://via.placeholder.com/200/FFD700/000000?text=Jazz"
-    },
-    {
-        id: 8,
-        title: "Импровизация в синем",
-        artist: "Blue Notes",
-        genre: "jazz",
-        duration: 267,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-        album: "Альбом 4",
-        cover: "https://via.placeholder.com/200/FFD700/000000?text=Jazz"
-    },
-    // Хип-Хоп
-    {
-        id: 9,
-        title: "Уличный ритм",
-        artist: "Hip Hop Kings",
-        genre: "hip-hop",
-        duration: 206,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-        album: "Альбом 5",
-        cover: "https://via.placeholder.com/200/00FF00/000000?text=Hip-Hop"
-    },
-    {
-        id: 10,
-        title: "Микрофонный огонь",
-        artist: "Rap Phoenix",
-        genre: "hip-hop",
-        duration: 213,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-        album: "Альбом 5",
-        cover: "https://via.placeholder.com/200/00FF00/000000?text=Hip-Hop"
-    },
-    // Акустика
-    {
-        id: 11,
-        title: "Гитарные струны",
-        artist: "Acoustic Hearts",
-        genre: "acoustic",
-        duration: 245,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-        album: "Альбом 6",
-        cover: "https://via.placeholder.com/200/8B4513/FFFFFF?text=Acoustic"
-    },
-    {
-        id: 12,
-        title: "Деревенская мелодия",
-        artist: "Folk Harmony",
-        genre: "acoustic",
-        duration: 198,
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-        album: "Альбом 6",
-        cover: "https://via.placeholder.com/200/8B4513/FFFFFF?text=Acoustic"
-    }
+// 1. НАШ СПИСОК ТРЕКОВ
+const playlist = [
+    'Picotiny - Шторм.mp3',
+    'Picotiny - Елки-ежики.mp3',
+    'Picotiny - Портал.mp3',
+    'Picotiny - Встреча.mp3',
+    'Picotiny - Звезды в руках.mp3',
+    'Picotiny - Кэп.mp3'
 ];
+// Твой поток радио из AzuraCast
+const radioStreamUrl = 'http://176.94.74.177:8000/radio.mp3';
 
-// ========== Переменные плеера ==========
-let currentTrackIndex = 0;
+let currentTrackIndex = 0; 
 let isPlaying = false;
-let currentGenre = null;
-let playlist = [...tracks];
+let isRadioMode = false; // По умолчанию режим плеера файлов
 
-const audioPlayer = document.getElementById('audioPlayer');
-const playBtn = document.getElementById('playBtn');
-const progressInput = document.getElementById('progressInput');
-const volumeControl = document.getElementById('volumeControl');
+// Автоматически экранируем спецсимволы в путях файлов (пробелы, кириллицу)
+let audioPath = `playlist/${encodeURIComponent(playlist[currentTrackIndex])}`;
+let audio = new Audio(audioPath);
 
-// ========== Инициализация ==========
-function init() {
-    loadTrack(0);
-    setupEventListeners();
-    renderPlaylist();
-}
+// Находим элементы интерфейса плеера
+const playBtn = document.getElementById('play');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const coverImg = document.getElementById('cover');
+const titleText = document.getElementById('title');
+const artistText = document.getElementById('artist');
 
-// ========== Установка слушателей событий ==========
-function setupEventListeners() {
-    audioPlayer.addEventListener('loadedmetadata', updateDuration);
-    audioPlayer.addEventListener('timeupdate', updateProgress);
-    audioPlayer.addEventListener('ended', nextTrack);
-    
-    progressInput.addEventListener('input', (e) => {
-        audioPlayer.currentTime = (e.target.value / 100) * audioPlayer.duration;
-    });
+const progressBarContainer = document.getElementById('progress-container');
+const progressBar = document.getElementById('progress');
+const currentTimeText = document.getElementById('current-time');
+const durationTimeText = document.getElementById('duration');
 
-    volumeControl.addEventListener('input', (e) => {
-        audioPlayer.volume = e.target.value / 100;
-    });
+// Элементы управления бортовой панели радио-тумблера
+const radioToggleBtn = document.getElementById('radio-toggle');
+const deckDisplay = document.getElementById('deck-display');
 
-    // Навигация
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            e.target.classList.add('active');
-        });
-    });
-}
-
-// ========== Загрузка трека ==========
-function loadTrack(index) {
-    if (playlist.length === 0) return;
-    
-    currentTrackIndex = index;
-    const track = playlist[index];
-    
-    audioPlayer.src = track.src;
-    document.getElementById('trackTitle').textContent = track.title;
-    document.getElementById('trackArtist').textContent = track.artist;
-    document.getElementById('trackGenre').textContent = track.genre.toUpperCase();
-    document.getElementById('albumImage').src = track.cover;
-    
-    updatePlaylistUI();
-}
-
-// ========== Воспроизведение/Пауза ==========
-function togglePlay() {
-    if (isPlaying) {
-        audioPlayer.pause();
-        playBtn.textContent = '▶️';
-        isPlaying = false;
-    } else {
-        audioPlayer.play().catch(err => {
-            console.error('Ошибка при воспроизведении:', err);
-        });
-        playBtn.textContent = '⏸️';
-        isPlaying = true;
-    }
-}
-
-// ========== Следующий трек ==========
-function nextTrack() {
-    if (currentTrackIndex < playlist.length - 1) {
-        loadTrack(currentTrackIndex + 1);
-        if (isPlaying) {
-            audioPlayer.play();
-        }
-    } else {
-        // Циклический плей
-        loadTrack(0);
-        if (isPlaying) {
-            audioPlayer.play();
-        }
-    }
-}
-
-// ========== Предыдущий трек ==========
-function previousTrack() {
-    if (currentTrackIndex > 0) {
-        loadTrack(currentTrackIndex - 1);
-        if (isPlaying) {
-            audioPlayer.play();
-        }
-    } else {
-        loadTrack(playlist.length - 1);
-        if (isPlaying) {
-            audioPlayer.play();
-        }
-    }
-}
-
-// ========== Обновление прогресса ==========
-function updateProgress() {
-    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-    progressInput.value = progress;
-    document.getElementById('progress').style.width = progress + '%';
-    
-    document.getElementById('currentTime').textContent = formatTime(audioPlayer.currentTime);
-}
-
-// ========== Обновление длительности ==========
-function updateDuration() {
-    document.getElementById('duration').textContent = formatTime(audioPlayer.duration);
-    progressInput.max = 100;
-}
-
-// ========== Форматирование времени ==========
 function formatTime(seconds) {
-    if (isNaN(seconds)) return '0:00';
-    
+    if (isNaN(seconds)) return "0:00";
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-// ========== Фильтрация по жанру ==========
-function filterByGenre(genre) {
-    currentGenre = genre;
-    if (genre === 'all') {
-        playlist = [...tracks];
+// Вспомогательная функция: правильно читает текст из байтов ID3 (обрабатывает Unicode)
+function readID3String(view, offset, size) {
+    if (size <= 1) return "";
+    const encoding = view.getUint8(offset);
+    let start = offset + 1;
+    let length = size - 1;
+
+    if (encoding === 1 || encoding === 2) { 
+        if (length >= 2 && ((view.getUint8(start) === 0xFF && view.getUint8(start+1) === 0xFE) || (view.getUint8(start) === 0xFE && view.getUint8(start+1) === 0xFF))) {
+            start += 2;
+            length -= 2;
+        }
+        const utf16Data = new Uint16Array(length / 2);
+        for (let i = 0; i < utf16Data.length; i++) {
+            utf16Data[i] = view.getUint16(start + i * 2, true); 
+        }
+        let str = String.fromCharCode.apply(null, utf16Data);
+        return str.replace(/\0+$/, '').trim();
+    } else { 
+        let strData = [];
+        for (let i = 0; i < length; i++) {
+            const charCode = view.getUint8(start + i);
+            if (charCode === 0) break;
+            strData.push(charCode);
+        }
+        try {
+            return new TextDecoder('utf-8').decode(new Uint8Array(strData)).trim();
+        } catch(e) {
+            return String.fromCharCode.apply(null, strData).trim();
+        }
+    }
+}
+
+// 2. ФУНКЦИЯ ЗАГРУЗКИ ТРЕКА И ЕГО МЕТАДАННЫХ
+async function loadTrack(index) {
+    audio.pause();
+    
+    if (coverImg.src && coverImg.src.startsWith('blob:')) {
+        URL.revokeObjectURL(coverImg.src);
+    }
+    coverImg.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>";
+    
+    currentTrackIndex = index;
+    audioPath = `playlist/${encodeURIComponent(playlist[currentTrackIndex])}`;
+    
+    audio = new Audio(audioPath);
+    initAudioListeners();
+
+    progressBar.style.width = '0%';
+    currentTimeText.innerText = '0:00';
+    durationTimeText.innerText = '0:00';
+
+    if (isPlaying) {
+        audio.play().catch(e => console.log("Ждем клика..."));
+    }
+    
+    const cleanName = playlist[currentTrackIndex].replace('.mp3', '');
+    let fallbackArtist = cleanName.includes(' - ') ? cleanName.split(' - ')[0] : "Picotiny";
+    let fallbackTitle = cleanName.includes(' - ') ? cleanName.split(' - ')[1] : cleanName;
+
+    try {
+        const response = await fetch(audioPath);
+        const buffer = await response.arrayBuffer();
+        const view = new DataView(buffer);
+
+        if (view.getUint8(0) === 0x49 && view.getUint8(1) === 0x44 && view.getUint8(2) === 0x33) {
+            const bufferLength = buffer.byteLength;
+            let offset = 10;
+
+            let extractedTitle = "";
+            let extractedArtist = "";
+            let hasPicture = false;
+
+            while (offset < bufferLength - 10) {
+                const frameId = String.fromCharCode(view.getUint8(offset), view.getUint8(offset+1), view.getUint8(offset+2), view.getUint8(offset+3));
+                const frameSize = view.getUint32(offset + 4, false);
+
+                if (frameSize <= 0 || (offset + 10 + frameSize) > bufferLength) break;
+
+                if (frameId === 'TIT2') {
+                    extractedTitle = readID3String(view, offset + 10, frameSize);
+                }
+                else if (frameId === 'TPE1') {
+                    extractedArtist = readID3String(view, offset + 10, frameSize);
+                }
+                else if (frameId === 'APIC') {
+                    let imgOffset = offset + 10;
+                    const textEncoding = view.getUint8(imgOffset);
+                    imgOffset++;
+
+                    let mimeTypeString = "";
+                    while (view.getUint8(imgOffset) !== 0) {
+                        mimeTypeString += String.fromCharCode(view.getUint8(imgOffset));
+                        imgOffset++;
+                    }
+                    imgOffset++;
+
+                    const pictureType = view.getUint8(imgOffset);
+                    imgOffset++;
+
+                    while (view.getUint8(imgOffset) !== 0) imgOffset++;
+                    imgOffset++;
+
+                    const imgData = buffer.slice(imgOffset, offset + 10 + frameSize);
+                    const finalMime = mimeTypeString || 'image/jpeg';
+                    const blob = new Blob([imgData], { type: finalMime });
+                    
+                    coverImg.src = URL.createObjectURL(blob);
+                    hasPicture = true;
+                }
+
+                offset += 10 + frameSize;
+            }
+
+            titleText.innerText = extractedTitle || fallbackTitle;
+            artistText.innerText = extractedArtist || fallbackArtist;
+            if (hasPicture) return; 
+        }
+    } catch (e) {
+        console.log("Ошибка чтения внутренних тегов:", e);
+    }
+
+    titleText.innerText = fallbackTitle;
+    artistText.innerText = fallbackArtist;
+}
+
+// 3. НАСТРОЙКА СЛУШАТЕЛЕЙ
+function initAudioListeners() {
+    audio.addEventListener('timeupdate', () => {
+        if (isRadioMode) return;
+        const currentTime = audio.currentTime;
+        const duration = audio.duration;
+        if (duration) {
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            currentTimeText.innerText = formatTime(currentTime);
+        }
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+        if (isRadioMode) return;
+        durationTimeText.innerText = formatTime(audio.duration);
+    });
+
+    audio.addEventListener('ended', () => {
+        if (!isRadioMode) nextTrack();
+    });
+}
+
+// 4. ЛОГИКА ТУМБЛЕРА «РАДИО / ПЛЕЕР»
+function toggleRadioMode() {
+    isRadioMode = !isRadioMode;
+
+    if (isRadioMode) {
+        // --- ВКЛЮЧАЕМ РАДИО ---
+        audio.pause();
+        radioToggleBtn.classList.add('radio-active');
+        deckDisplay.innerText = "RADIO";
+        deckDisplay.style.color = "#ff3366"; 
+        deckDisplay.style.textShadow = "0 0 8px #ff3366";
+
+        nextBtn.classList.add('btn-disabled');
+        prevBtn.classList.add('btn-disabled');
+        progressBarContainer.style.opacity = '0.3';
+        progressBarContainer.style.pointerEvents = 'none';
+
+        titleText.innerText = "Прямой Эфир";
+        artistText.innerText = "Flow Synapse"
+        coverImg.src = "images/flowsynapse.jpg";
+
+        audio.src = radioStreamUrl;
+        
+        currentTimeText.innerText = "LIVE";
+        durationTimeText.innerText = "••:••";
+        progressBar.style.width = "100%"; 
+
+        if (isPlaying) {
+            audio.play().catch(e => console.log("Стрим ожидает запуска..."));
+        }
     } else {
-        playlist = tracks.filter(track => track.genre === genre);
-    }
-    
-    if (playlist.length > 0) {
-        loadTrack(0);
-        renderPlaylist();
-    }
-}
+        // --- ВОЗВРАЩАЕМ ПЛЕЕР ФАЙЛОВ ---
+        radioToggleBtn.classList.remove('radio-active');
+        deckDisplay.innerText = "HI-FI";
+        deckDisplay.style.color = "#00ffcc";
+        deckDisplay.style.textShadow = "0 0 8px #00ffcc";
 
-// ========== Воспроизведение альбома ==========
-function playAlbum(albumId) {
-    // Фильтруем треки по альбому
-    const albumTracks = tracks.filter(track => track.album === `Альбом ${albumId}`);
-    if (albumTracks.length > 0) {
-        playlist = albumTracks;
-        loadTrack(0);
-        audioPlayer.play();
-        playBtn.textContent = '⏸️';
-        isPlaying = true;
-        renderPlaylist();
+        nextBtn.classList.remove('btn-disabled');
+        prevBtn.classList.remove('btn-disabled');
+        progressBarContainer.style.opacity = '1';
+        progressBarContainer.style.pointerEvents = 'auto';
+
+        loadTrack(currentTrackIndex);
     }
 }
 
-// ========== Отрисовка плейлиста ==========
-function renderPlaylist() {
-    const playlistContainer = document.getElementById('playlistTracks');
-    playlistContainer.innerHTML = '';
-    
-    playlist.forEach((track, index) => {
-        const trackElement = document.createElement('div');
-        trackElement.className = 'track-item';
-        if (index === currentTrackIndex) {
-            trackElement.classList.add('active');
-        }
-        
-        trackElement.innerHTML = `
-            <div class="track-item-info">
-                <div class="track-item-title">${track.title}</div>
-                <div class="track-item-meta">${track.artist} • ${track.genre}</div>
-            </div>
-            <div class="track-item-duration">${formatTime(track.duration)}</div>
-        `;
-        
-        trackElement.addEventListener('click', () => {
-            const absoluteIndex = tracks.indexOf(track);
-            loadTrack(absoluteIndex);
-            audioPlayer.play();
-            playBtn.textContent = '⏸️';
-            isPlaying = true;
-        });
-        
-        playlistContainer.appendChild(trackElement);
-    });
+radioToggleBtn.addEventListener('click', toggleRadioMode);
+
+// 5. УПРАВЛЕНИЕ
+function playTrack() {
+    isPlaying = true;
+    if (isRadioMode) {
+        audio.src = radioStreamUrl; 
+    }
+    audio.play().catch(e => console.log("Ошибка воспроизведения:", e));
+    playBtn.innerText = '⏸';
 }
 
-// ========== Обновление UI плейлиста ==========
-function updatePlaylistUI() {
-    document.querySelectorAll('.track-item').forEach((item, index) => {
-        item.classList.remove('active');
-        if (index === currentTrackIndex) {
-            item.classList.add('active');
-        }
-    });
+// Изменено: Стрелочная функция заменена на полноценную декларацию, чтобы не было конфликтов объявлений
+function pauseTrack() {
+    isPlaying = false;
+    audio.pause();
+    if (isRadioMode) {
+        audio.src = ""; 
+    }
+    playBtn.innerText = '▶';
 }
 
-// ========== Запуск при загрузке страницы ==========
-document.addEventListener('DOMContentLoaded', init);
+function nextTrack() {
+    let nextIndex = currentTrackIndex + 1;
+    if (nextIndex >= playlist.length) nextIndex = 0;
+    loadTrack(nextIndex);
+}
+
+function prevTrack() {
+    let prevIndex = currentTrackIndex - 1;
+    if (prevIndex < 0) prevIndex = playlist.length - 1;
+    loadTrack(prevIndex);
+}
+
+playBtn.addEventListener('click', () => {
+    if (isPlaying) pauseTrack(); else playTrack();
+});
+
+nextBtn.addEventListener('click', () => {
+    if (!isRadioMode) nextTrack();
+});
+prevBtn.addEventListener('click', () => {
+    if (!isRadioMode) prevTrack();
+});
+
+progressBarContainer.addEventListener('click', (e) => {
+    if (isRadioMode) return; 
+    const width = progressBarContainer.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audio.duration;
+    if (duration) {
+        audio.currentTime = (clickX / width) * duration;
+    }
+});
+
+// Старт
+initAudioListeners();
+loadTrack(currentTrackIndex);
