@@ -1,0 +1,211 @@
+{
+  "siteConfig": {
+    "title": "Picotiny Music",
+    "subtitle": "Многожанровая музыкальная коллекция",
+    "logo": "🎵",
+    "description": "Откройте для себя музыку разных жанров в одном месте",
+    "socialLinks": {
+      "vk": "https://vk.com",
+      "telegram": "https://t.me",
+      "instagram": "https://instagram.com"
+    }
+  },
+  "genres": [
+    {
+      "id": "pop",
+      "name": "Поп",
+      "emoji": "🎤",
+      "color": "#FF69B4"
+    },
+    {
+      "id": "rock",
+      "name": "Рок",
+      "emoji": "🎸",
+      "color": "#FF6347"
+    },
+    {
+      "id": "electronic",
+      "name": "Электроника",
+      "emoji": "🎹",
+      "color": "#00CED1"
+    },
+    {
+      "id": "jazz",
+      "name": "Джаз",
+      "emoji": "🎷",
+      "color": "#FFD700"
+    },
+    {
+      "id": "hip-hop",
+      "name": "Хип-Хоп",
+      "emoji": "🎙️",
+      "color": "#00FF00"
+    },
+    {
+      "id": "acoustic",
+      "name": "Акустика",
+      "emoji": "🎶",
+      "color": "#8B4513"
+    }
+  ],
+  "albums": [
+    {
+      "id": 1,
+      "title": "Альбом 1",
+      "artist": "Артист имя",
+      "year": 2024,
+      "cover": "https://via.placeholder.com/200",
+      "genre": "pop",
+      "tracks": [1, 2]
+    },
+    {
+      "id": 2,
+      "title": "Альбом 2",
+      "artist": "Артист имя",
+      "year": 2024,
+      "cover": "https://via.placeholder.com/200",
+      "genre": "rock",
+      "tracks": [3, 4]
+    },
+    {
+      "id": 3,
+      "title": "Альбом 3",
+      "artist": "Артист имя",
+      "year": 2024,
+      "cover": "https://via.placeholder.com/200",
+      "genre": "electronic",
+      "tracks": [5, 6]
+    },
+    {
+      "id": 4,
+      "title": "Альбом 4",
+      "artist": "Артист имя",
+      "year": 2023,
+      "cover": "https://via.placeholder.com/200",
+      "genre": "jazz",
+      "tracks": [7, 8]
+    }
+  ],
+  "tracks": [
+    {
+      "id": 1,
+      "title": "Летний день",
+      "artist": "The Sunnyboys",
+      "genre": "pop",
+      "duration": 213,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "album": "Альбом 1",
+      "cover": "https://via.placeholder.com/200/FF69B4/FFFFFF?text=Pop"
+    },
+    {
+      "id": 2,
+      "title": "Танцующая ночь",
+      "artist": "DJ Sparkle",
+      "genre": "pop",
+      "duration": 195,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      "album": "Альбом 1",
+      "cover": "https://via.placeholder.com/200/FF69B4/FFFFFF?text=Pop"
+    },
+    {
+      "id": 3,
+      "title": "Каменная дорога",
+      "artist": "Rock Legends",
+      "genre": "rock",
+      "duration": 245,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+      "album": "Альбом 2",
+      "cover": "https://via.placeholder.com/200/FF6347/FFFFFF?text=Rock"
+    },
+    {
+      "id": 4,
+      "title": "Электрический удар",
+      "artist": "Thunder Road",
+      "genre": "rock",
+      "duration": 267,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+      "album": "Альбом 2",
+      "cover": "https://via.placeholder.com/200/FF6347/FFFFFF?text=Rock"
+    },
+    {
+      "id": 5,
+      "title": "Синтезатор света",
+      "artist": "Neon Pulse",
+      "genre": "electronic",
+      "duration": 198,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+      "album": "Альбом 3",
+      "cover": "https://via.placeholder.com/200/00CED1/FFFFFF?text=Electronic"
+    },
+    {
+      "id": 6,
+      "title": "Битовая метаморфоза",
+      "artist": "Beat Master",
+      "genre": "electronic",
+      "duration": 224,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+      "album": "Альбом 3",
+      "cover": "https://via.placeholder.com/200/00CED1/FFFFFF?text=Electronic"
+    },
+    {
+      "id": 7,
+      "title": "Ночной саксофон",
+      "artist": "Jazz Cafe",
+      "genre": "jazz",
+      "duration": 289,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "album": "Альбом 4",
+      "cover": "https://via.placeholder.com/200/FFD700/000000?text=Jazz"
+    },
+    {
+      "id": 8,
+      "title": "Импровизация в синем",
+      "artist": "Blue Notes",
+      "genre": "jazz",
+      "duration": 267,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      "album": "Альбом 4",
+      "cover": "https://via.placeholder.com/200/FFD700/000000?text=Jazz"
+    },
+    {
+      "id": 9,
+      "title": "Уличный ритм",
+      "artist": "Hip Hop Kings",
+      "genre": "hip-hop",
+      "duration": 206,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+      "album": "Альбом 5",
+      "cover": "https://via.placeholder.com/200/00FF00/000000?text=Hip-Hop"
+    },
+    {
+      "id": 10,
+      "title": "Микрофонный огонь",
+      "artist": "Rap Phoenix",
+      "genre": "hip-hop",
+      "duration": 213,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+      "album": "Альбом 5",
+      "cover": "https://via.placeholder.com/200/00FF00/000000?text=Hip-Hop"
+    },
+    {
+      "id": 11,
+      "title": "Гитарные струны",
+      "artist": "Acoustic Hearts",
+      "genre": "acoustic",
+      "duration": 245,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+      "album": "Альбом 6",
+      "cover": "https://via.placeholder.com/200/8B4513/FFFFFF?text=Acoustic"
+    },
+    {
+      "id": 12,
+      "title": "Деревенская мелодия",
+      "artist": "Folk Harmony",
+      "genre": "acoustic",
+      "duration": 198,
+      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+      "album": "Альбом 6",
+      "cover": "https://via.placeholder.com/200/8B4513/FFFFFF?text=Acoustic"
+    }
+  ]
+}
