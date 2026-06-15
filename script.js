@@ -8,8 +8,7 @@ const playlist = [
     'Picotiny - Кэп.mp3'
 ];
 
-//поток радио
-const radioStreamUrl = 'https://cors-proxy.htmldriven.com/?url=' + encodeURIComponent('http://176.94.74.177:8000/radio.mp3');
+const radioStreamUrl = 'https://cors.wsr.io/http://176.94.74.177:8000/radio.mp3';
 
 // Переменные для Web Audio API (инициализируем позже при клике)
 let audioCtx = null;
@@ -101,16 +100,16 @@ function readSynchsafeInt(view, offset) {
            view.getUint8(offset + 3);
 }
 
-
 async function updateRadioMetadata() {
-    // 1. Собираем чистый, прямой адрес JSON-статистики твоего сервера
+    // Прямой http-адрес твоей статистики
     const rawApiUrl = 'http://176.94.74.177:8000/status-json.xsl'; 
     
+    // Оборачиваем текстовый запрос в стабильный HTTPS-прокси allorigins
     const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rawApiUrl)}`;
 
     try {
         const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error("Прокси-сервер не ответил");
+        if (!response.ok) throw new Error("Прокси-сервер метаданных не ответил");
         
         const data = await response.json();
         
@@ -124,6 +123,7 @@ async function updateRadioMetadata() {
             const currentArtist = source.artist || "FLOW SYNAPSE";
             const currentTitle = source.title || "ПРЯМОЙ ЭФИР";
             
+            // Если режим радио все еще активен, красим капсом
             if (isRadioMode) {
                 titleText.innerText = currentTitle.toUpperCase();
                 artistText.innerText = currentArtist.toUpperCase();
