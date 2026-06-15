@@ -8,7 +8,9 @@ const playlist = [
     'Picotiny - Кэп.mp3'
 ];
 
-const radioStreamUrl = 'https://176.94.74.177:8000/radio.mp3';
+// Твой поток радио из AzuraCast
+//const radioStreamUrl = 'https://176.94.74.177:8000/radio.mp3';
+ const radioStreamUrl = 'https://192.168.200.18:8000/radio.mp3';
 
 // Переменные для Web Audio API (инициализируем позже при клике)
 let audioCtx = null;
@@ -100,19 +102,18 @@ function readSynchsafeInt(view, offset) {
            view.getUint8(offset + 3);
 }
 
+
 async function updateRadioMetadata() {
-    // Прямой http-адрес твоей статистики Icecast
-    const rawApiUrl = 'http://176.94.74.177:8000/status-json.xsl'; 
-    
-    // Текстовый прокси allorigins — он идеально отдает JSON по HTTPS
-    const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rawApiUrl)}`;
+    // Стучимся напрямую в Icecast на открытый порт 8000
+    const apiUrl = radioStreamUrl.replace('/radio.mp3', '/status-json.xsl');
 
     try {
         const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error("Прокси-сервер метаданных не ответил");
+        if (!response.ok) throw new Error("Icecast не отвечает");
         
         const data = await response.json();
         
+        // Проверяем наличие данных стрима в полученном JSON
         if (data && data.icestats && data.icestats.source) {
             let source = data.icestats.source;
             
@@ -120,17 +121,19 @@ async function updateRadioMetadata() {
                 source = source[0];
             }
             
+            // Вытаскиваем артиста и название трека из твоих полей
             const currentArtist = source.artist || "FLOW SYNAPSE";
             const currentTitle = source.title || "ПРЯМОЙ ЭФИР";
             
-            // Если режим радио активен, выводим на табло космолета
+            // Если мы всё ещё в режиме радио, обновляем интерфейс капсом
             if (isRadioMode) {
                 titleText.innerText = currentTitle.toUpperCase();
                 artistText.innerText = currentArtist.toUpperCase();
             }
         }
     } catch (e) {
-        console.warn("Сбой получения метаданных через HTTPS-прокси:", e.message);
+        console.warn("Сбой получения метаданных с порта 8000:", e.message);
+        // Мягкий фоллбек, чтобы интерфейс кабины не пустовал при сбое сети
         if (isRadioMode) {
             titleText.innerText = "ПРЯМОЙ ЭФИР";
             artistText.innerText = "FLOW SYNAPSE";
