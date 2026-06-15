@@ -28,6 +28,7 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    background: var(--bg-dark);
 }
 
 /* 2. Обертка теперь — просто контейнер для картинки и кнопок */
@@ -103,9 +104,9 @@ body::after {
 /* Обложка трека (Идеальная посадка пиксель в пиксель) */
 .cover-wrapper {
     width: 100%;
-    aspect-ratio: 1 / 1;      /* Строгий квадрат */
-    max-height: 290px;        /* Чуть приподняли лимит, чтобы картинке было просторно */
-    margin-bottom: 18px; 
+    aspect-ratio: 1 / 1;      
+    max-height: 290px;        
+    margin-bottom: 25px; /* Увеличили с 18px до 25px, чтобы отодвинуть текст от картинки */
     overflow: hidden;         
     border-radius: 12px;
 }
@@ -130,24 +131,31 @@ body::after {
 }
 
 .track-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
+    font-family: 'Courier New', Courier, monospace; /* Переключаем на хакерский моноширинный шрифт */
+    font-size: 1.4rem;
+    font-weight: 800;                              /* Делаем шрифт максимально плотным */
+    letter-spacing: 1px;                           /* Слегка растягиваем буквы для эффекта терминала */
+    margin-bottom: 6px;
+    color: #00ffcc;                                /* Фирменный неоновый бирюзовый цвет */
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.6),   /* Двойное киберпанк-свечение */
+                 0 0 20px rgba(0, 255, 204, 0.3);
+    text-transform: uppercase;                     /* Переводим название в Капс для агрессивности */
     
-    /* Твои настройки для многоточия */
+    /* Настройки для аккуратного многоточия */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    
-    /* Это поможет, если текст всё равно не влезает */
     max-width: 100%;
 }
 
 .track-artist {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    font-weight: 400;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    color: var(--primary-color);                   /* Подсвечиваем артиста твоим золотым цветом */
+    font-weight: 700;                              /* Накачиваем весом, теперь он не будет тонким! */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(255, 183, 0, 0.5);   /* Золотистое свечение */
 }
 
 /* Прогресс-бар */
@@ -199,16 +207,19 @@ body::after {
     font-size: 0.75rem;
     color: var(--text-muted);
     font-variant-numeric: tabular-nums;
+
+    padding-left: 15px;  /* Отступ слева для текущего времени */
+    padding-right: 15px;
 }
 
-/* Кнопки управления */
 /* Кнопки управления */
 .controls {
     display: flex;
     justify-content: center; /* Центрируем всё */
     align-items: center;
     gap: 40px;               /* Увеличили расстояние между кнопками */
-    margin-top: 20px;
+    position: relative; /* Включаем режим точечного позиционирования */
+    top: -25px;
 }
 
 /* Общие стили для кнопок переключения (предыдущий/следующий) */
@@ -398,4 +409,24 @@ body::after {
     opacity: 0.2 !important;
     pointer-events: none !important;
     box-shadow: none !important;
+}
+
+.music-visualizer-glow {
+    position: absolute;
+    top: 36%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px; /* чуть больше плеера */
+    height: 480px;
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: 99;
+    /* Настраиваемое свечение */
+    box-shadow: 0 0 100px rgba(
+        calc(var(--red-intensity) * 255), 
+        calc(var(--green-intensity) * 255), 
+        calc(var(--blue-intensity) * 255), 
+        0.5
+    );
+    transition: box-shadow 0.1s ease-out;
 }
