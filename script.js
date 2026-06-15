@@ -8,7 +8,7 @@ const playlist = [
     'Picotiny - Кэп.mp3'
 ];
 
-const radioStreamUrl = 'https://cors.wsr.io/http://176.94.74.177:8000/radio.mp3';
+const radioStreamUrl = 'https://176.94.74.177:8000/radio.mp3';
 
 // Переменные для Web Audio API (инициализируем позже при клике)
 let audioCtx = null;
