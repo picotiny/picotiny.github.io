@@ -85,7 +85,7 @@ body::after {
     transform: translate(-50%, -50%);
     
     /* Жестко фиксируем размеры, чтобы он не "дышал" */
-    width: 350px;
+    width: 310px;
     height: auto;
     
     /* Убираем все анимации, меняющие геометрию */
@@ -416,8 +416,8 @@ body::after {
     top: 36%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 380px; /* чуть больше плеера */
-    height: 480px;
+    width: 340px; /* чуть больше плеера */
+    height: 520px;
     border-radius: 20px;
     pointer-events: none;
     z-index: 99;
