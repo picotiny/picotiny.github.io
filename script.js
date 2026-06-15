@@ -8,9 +8,9 @@ const playlist = [
     'Picotiny - Кэп.mp3'
 ];
 
-// Твой поток радио из AzuraCast
-//const radioStreamUrl = 'https://176.94.74.177:8000/radio.mp3';
- const radioStreamUrl = 'https://192.168.200.18:8000/radio.mp3';
+// поток радио
+const radioStreamUrl = 'https://176.94.74.177:8000/radio.mp3';
+//const radioStreamUrl = 'http://192.168.200.18:8000/radio.mp3';
 
 // Переменные для Web Audio API (инициализируем позже при клике)
 let audioCtx = null;
