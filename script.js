@@ -101,10 +101,10 @@ function readSynchsafeInt(view, offset) {
 }
 
 async function updateRadioMetadata() {
-    // Прямой http-адрес твоей статистики
+    // Прямой http-адрес твоей статистики Icecast
     const rawApiUrl = 'http://176.94.74.177:8000/status-json.xsl'; 
     
-    // Оборачиваем текстовый запрос в стабильный HTTPS-прокси allorigins
+    // Текстовый прокси allorigins — он идеально отдает JSON по HTTPS
     const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rawApiUrl)}`;
 
     try {
@@ -123,7 +123,7 @@ async function updateRadioMetadata() {
             const currentArtist = source.artist || "FLOW SYNAPSE";
             const currentTitle = source.title || "ПРЯМОЙ ЭФИР";
             
-            // Если режим радио все еще активен, красим капсом
+            // Если режим радио активен, выводим на табло космолета
             if (isRadioMode) {
                 titleText.innerText = currentTitle.toUpperCase();
                 artistText.innerText = currentArtist.toUpperCase();
