@@ -10,12 +10,14 @@ const playlist = [
 
 // Твой поток радио из AzuraCast
 const radioStreamUrl = 'https://176.94.74.177:8000/radio.mp3';
+// const radioStreamUrl = 'http://192.168.200.18:8000/radio.mp3';
 
 // Переменные для Web Audio API (инициализируем позже при клике)
 let audioCtx = null;
 let analyser = null;
 let source = null;
 let dataArray = null;
+let radioTimer = null;
 
 let currentTrackIndex = 0; 
 let isPlaying = false;
@@ -98,6 +100,45 @@ function readSynchsafeInt(view, offset) {
            (view.getUint8(offset + 1) << 14) |
            (view.getUint8(offset + 2) << 7) |
            view.getUint8(offset + 3);
+}
+
+
+async function updateRadioMetadata() {
+    // Стучимся напрямую в Icecast на открытый порт 8000
+    const apiUrl = radioStreamUrl.replace('/radio.mp3', '/status-json.xsl');
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Icecast не отвечает");
+        
+        const data = await response.json();
+        
+        // Проверяем наличие данных стрима в полученном JSON
+        if (data && data.icestats && data.icestats.source) {
+            let source = data.icestats.source;
+            
+            if (Array.isArray(source)) {
+                source = source[0];
+            }
+            
+            // Вытаскиваем артиста и название трека из твоих полей
+            const currentArtist = source.artist || "FLOW SYNAPSE";
+            const currentTitle = source.title || "ПРЯМОЙ ЭФИР";
+            
+            // Если мы всё ещё в режиме радио, обновляем интерфейс капсом
+            if (isRadioMode) {
+                titleText.innerText = currentTitle.toUpperCase();
+                artistText.innerText = currentArtist.toUpperCase();
+            }
+        }
+    } catch (e) {
+        console.warn("Сбой получения метаданных с порта 8000:", e.message);
+        // Мягкий фоллбек, чтобы интерфейс кабины не пустовал при сбое сети
+        if (isRadioMode) {
+            titleText.innerText = "ПРЯМОЙ ЭФИР";
+            artistText.innerText = "FLOW SYNAPSE";
+        }
+    }
 }
 
 async function loadTrack(index) {
@@ -257,8 +298,7 @@ function toggleRadioMode() {
         progressBarContainer.style.opacity = '0.3';
         progressBarContainer.style.pointerEvents = 'none';
 
-        titleText.innerText = "Прямой Эфир";
-        artistText.innerText = "Flow Synapse";
+        // Ставим локальную киберпанк-обложку по умолчанию
         coverImg.src = "images/flowsynapse.jpg";
 
         audio.src = radioStreamUrl;
@@ -267,11 +307,26 @@ function toggleRadioMode() {
         durationTimeText.innerText = "••:••";
         progressBar.style.width = "100%"; 
 
+        // Сразу запрашиваем свежие метаданные с сервера, не дожидаясь таймера
+        updateRadioMetadata();
+
+        // Запускаем регулярный опрос каждые 10 секунд, если радио активно играет
+        if (radioTimer) clearInterval(radioTimer);
+        if (isPlaying) {
+            radioTimer = setInterval(updateRadioMetadata, 10000);
+        }
+        
         if (isPlaying) {
             audio.play().catch(e => console.log("Стрим ожидает запуска..."));
         }
     } else {
         // --- ВОЗВРАЩАЕМ ПЛЕЕР ФАЙЛОВ ---
+        // Обязательно тушим таймер опроса порта 8000, чтобы не грузить сеть
+        if (radioTimer) {
+            clearInterval(radioTimer);
+            radioTimer = null;
+        }
+
         radioToggleBtn.classList.remove('radio-active');
         deckDisplay.innerText = "HI-FI";
         deckDisplay.style.color = "#00ffcc";
@@ -305,6 +360,10 @@ function playTrack() {
         audioCtx.resume();
     }
 
+    if (isRadioMode && !radioTimer) {
+    radioTimer = setInterval(updateRadioMetadata, 10000);
+}
+
     audio.play().catch(e => console.log("Ошибка воспроизведения:", e));
     playBtn.innerText = '⏸';
 }
@@ -312,6 +371,12 @@ function playTrack() {
 function pauseTrack() {
     isPlaying = false;
     audio.pause();
+
+    if (radioTimer) {
+        clearInterval(radioTimer);
+        radioTimer = null;
+    }
+
     if (isRadioMode) {
         audio.src = ""; 
     }
