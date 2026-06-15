@@ -104,12 +104,11 @@ function readSynchsafeInt(view, offset) {
 
 
 async function updateRadioMetadata() {
-    // Стучимся напрямую в Icecast на открытый порт 8000
-    const targetUrl = radioStreamUrl.replace('/radio.mp3', '/status-json.xsl');
-    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetUrl);
-
+    
+    const targetUrl = 'https://flowsynapse.duckdns.org:8000/status-json.xsl';
+    
     try {
-        const response = await fetch(proxyUrl);
+        const response = await fetch(targetUrl);
         if (!response.ok) throw new Error("Icecast не отвечает");
         
         const data = await response.json();
