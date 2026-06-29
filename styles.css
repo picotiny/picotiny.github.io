@@ -1,4 +1,6 @@
-/* Подключаем современный шрифт */
+/* ==========================================================================
+   1. ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ УСТРОЙСТВ (Шрифты, Переменные, Оформление)
+   ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
 :root {
@@ -15,35 +17,10 @@
     padding: 0;
 }
 
-html,
-body {
-    height: 100%;
-}
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+html, body {
+    margin: 0;
+    padding: 0;
     background: var(--bg-dark);
-}
-
-/* 2. Обертка теперь — просто контейнер для картинки и кнопок */
-.cockpit-wrapper {
-    position: relative; /* "База" для кнопок */
-    display: inline-block;
-    line-height: 0;
-}
-
-.cockpit-image {
-    display: block;      /* Убирает возможные отступы под картинкой */
-    max-height: 100vh;   /* Картинка не больше экрана */
-    max-width: 100vw;
-    width: auto;         /* Сохраняет пропорции */
-    height: auto;
 }
 
 /* Живой размытый фон (Аврора) */
@@ -55,9 +32,9 @@ body::before, body::after {
     border-radius: 50%;
     filter: blur(120px);
     z-index: 0;
-    opacity: 0.3; /* Слегка уменьшили, чтобы не перебивать детализацию кабины */
+    opacity: 0.3;
     animation: float 12s infinite alternate ease-in-out;
-    pointer-events: none; /* Чтобы круги не мешали кликать по сайту */
+    pointer-events: none;
 }
 
 body::before {
@@ -78,35 +55,23 @@ body::after {
     100% { transform: translate(80px, 50px) scale(1.2); }
 }
 
+/* Оформление внутренностей плеера */
 .player-container {
-    position: absolute;
-    top: 36%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    
-    /* Жестко фиксируем размеры, чтобы он не "дышал" */
-    width: 310px;
-    height: auto;
-    
-    /* Убираем все анимации, меняющие геометрию */
-    transition: box-shadow 0.3s ease, opacity 0.3s ease;
-    
     background: rgba(0, 0, 0, 0.8);
     border-radius: 15px;
     z-index: 100;
+    transition: box-shadow 0.3s ease, opacity 0.3s ease;
 }
 
-/* Исправлено: теперь ховер не ломает позицию по вертикали, а мягко подсвечивает */
 .player-container:hover {
     box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
 }
 
-/* Обложка трека (Идеальная посадка пиксель в пиксель) */
 .cover-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1;      
     max-height: 290px;        
-    margin-bottom: 25px; /* Увеличили с 18px до 25px, чтобы отодвинуть текст от картинки */
+    margin-bottom: 25px; 
     overflow: hidden;         
     border-radius: 12px;
 }
@@ -114,15 +79,14 @@ body::after {
 .cover-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: fill;         /* Масштабирует картинку ровно по границам контейнера без обрезки */
+    object-fit: fill;         
     transition: transform 0.5s ease;
 }
 
 .player-container:hover .cover-wrapper img {
-    transform: scale(1.05);   /* Эффект зума обложки при наведении на плеер */
+    transform: scale(1.05); 
 }
 
-/* Информация о треке */
 .track-info {
     text-align: center;
     margin-bottom: 20px;
@@ -131,17 +95,15 @@ body::after {
 }
 
 .track-title {
-    font-family: 'Courier New', Courier, monospace; /* Переключаем на хакерский моноширинный шрифт */
+    font-family: 'Courier New', Courier, monospace;
     font-size: 1.4rem;
-    font-weight: 800;                              /* Делаем шрифт максимально плотным */
-    letter-spacing: 1px;                           /* Слегка растягиваем буквы для эффекта терминала */
+    font-weight: 800;                                             
+    letter-spacing: 1px;                                   
     margin-bottom: 6px;
-    color: #00ffcc;                                /* Фирменный неоновый бирюзовый цвет */
-    text-shadow: 0 0 8px rgba(0, 255, 204, 0.6),   /* Двойное киберпанк-свечение */
+    color: #00ffcc;                                               
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.6),                    
                  0 0 20px rgba(0, 255, 204, 0.3);
-    text-transform: uppercase;                     /* Переводим название в Капс для агрессивности */
-    
-    /* Настройки для аккуратного многоточия */
+    text-transform: uppercase;                                     
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -151,21 +113,20 @@ body::after {
 .track-artist {
     font-family: 'Courier New', Courier, monospace;
     font-size: 1rem;
-    color: var(--primary-color);                   /* Подсвечиваем артиста твоим золотым цветом */
-    font-weight: 700;                              /* Накачиваем весом, теперь он не будет тонким! */
+    color: var(--primary-color);                                   
+    font-weight: 700;                                             
     letter-spacing: 2px;
     text-transform: uppercase;
-    text-shadow: 0 0 8px rgba(255, 183, 0, 0.5);   /* Золотистое свечение */
+    text-shadow: 0 0 8px rgba(255, 183, 0, 0.5);   
 }
 
-/* Прогресс-бар */
 .progress-area {
     margin-bottom: 22px;
 }
 
 .progress-bar-container {
     width: 100%;
-    height: 6px; /* или сколько у тебя было */
+    height: 6px; 
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     cursor: pointer;
@@ -182,7 +143,6 @@ body::after {
     transition: width 0.1s linear;
 }
 
-/* Ползунок при наведении */
 .progress-bar::after {
     content: '';
     position: absolute;
@@ -207,27 +167,15 @@ body::after {
     font-size: 0.75rem;
     color: var(--text-muted);
     font-variant-numeric: tabular-nums;
-
-    padding-left: 15px;  /* Отступ слева для текущего времени */
+    padding-left: 15px;  
     padding-right: 15px;
 }
 
-/* Кнопки управления */
-.controls {
-    display: flex;
-    justify-content: center; /* Центрируем всё */
-    align-items: center;
-    gap: 40px;               /* Увеличили расстояние между кнопками */
-    position: relative; /* Включаем режим точечного позиционирования */
-    top: -25px;
-}
-
-/* Общие стили для кнопок переключения (предыдущий/следующий) */
 .btn-nav {
-    background: rgba(255, 255, 255, 0.05); /* Легкий стеклянный эффект */
+    background: rgba(255, 255, 255, 0.05); 
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
-    width: 45px;             /* Сделали кнопки пошире */
+    width: 45px;             
     height: 35px;
     color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
@@ -240,65 +188,46 @@ body::after {
 .btn-nav:hover {
     background: rgba(255, 255, 255, 0.15);
     color: #fff;
-    border-color: var(--primary-color); /* Подсветка золотым при наведении */
+    border-color: var(--primary-color); 
 }
 
-/* Кнопка воспроизведения (Космический реактор) */
 .btn-play {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    
-    /* Делаем её полупрозрачной стеклянной с золотым градиентным контуром */
     background: rgba(7, 5, 9, 0.6); 
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 2px solid var(--primary-color); 
-    
-    /* Использовали цвет текста вместо темного, чтобы иконка ▶ светилась */
     color: var(--primary-color); 
     font-size: 1.4rem;
     opacity: 1;
-    
-    /* Мягкое неоновое свечение в обычном состоянии */
     box-shadow: 0 0 15px rgba(255, 183, 0, 0.2), 
                 inset 0 0 10px rgba(255, 183, 0, 0.1);
-    
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Эффект при наведении — кнопка «заряжается» */
 .btn-play:hover {
     transform: scale(1.08);
-    
-    /* Меняем цвет рамки и иконки на белый, как будто реактор раскалился */
     border-color: #ffffff;
     color: var(--bg-dark);
     background: #ffffff;
-    
-    /* Мощная неоновая вспышка вокруг кнопки */
     box-shadow: 0 0 25px var(--primary-color), 
                 0 0 50px rgba(255, 183, 0, 0.6);
-    
     text-shadow: none;
 }
 
-/* Небольшая коррекция для иконки паузы, чтобы она не съезжала */
 .btn-play:active {
     transform: scale(0.95);
 }
 
-/* Стили для современного подвала */
+/* Оформление футера */
 .site-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
-    background: rgba(7, 5, 9, 0.6); /* Полупрозрачный темный низ */
+    background: rgba(7, 5, 9, 0.6); 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -331,80 +260,15 @@ body::after {
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
-/* Адаптивность под мобилки */
-@media (max-width: 600px) {
-    .site-footer {
-        padding: 15px 20px;
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
-    .player-container {
-        transform: translateY(0); /* На мобилках центрируем по умолчанию */
-        width: 90%;
-    }
-    .player-container:hover {
-        transform: translateY(-3px) scale(1.01);
-    }
-}
-
-/* Обертка для бортовых систем, растянутая по фону */
 .cockpit-interface {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Пропускает клики сквозь себя */
-    z-index: 1;        /* Ставим интерфейс над изображением */
+    pointer-events: none; 
+    z-index: 1;        
 }
 
-
-/* Твой вариант: красивый, аккуратный и "электронный" */
-#radio-toggle {
-    position: absolute;
-    /* Координаты привязаны к картинке */
-    left: 40.5%; 
-    top: 78.5%;
-    width: 40px;
-    height: 26px;
-    /* Убираем странный transform, используем margin для точности */
-    margin-left: -20px; 
-    margin-top: -13px;
-    
-    background: rgba(0, 0, 0, 0.3); 
-    border: 4px solid rgba(0, 255, 204, 1); 
-    border-radius: 4px;
-    cursor: pointer;
-    z-index: 10;
-}
-
-/* Эффект при наведении (добавил чуть больше свечения) */
-#radio-toggle:hover {
-    background: rgba(0, 255, 204, 0.15);
-    border-color: rgb(248, 4, 4);
-    box-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
-}
-
-/* Эффект нажатия */
-#radio-toggle:active {
-    transform: scale(0.95);
-    background: rgba(0, 255, 204, 0.3);
-}
-
-/* Электронное табло поверх родного LO-FI */
-#deck-display {
-    position: absolute;
-    left: 48.4%;
-    top: 73.3%;
-    font-family: 'Courier New', monospace;
-    font-size: 15px;
-    color: #00ffcc;
-    text-shadow: 0 0 8px #00ffcc;
-    pointer-events: none;
-    z-index: 10;
-}
-
-/* Класс отключения кнопок при радио */
 .btn-disabled {
     opacity: 0.2 !important;
     pointer-events: none !important;
@@ -412,16 +276,8 @@ body::after {
 }
 
 .music-visualizer-glow {
-    position: absolute;
-    top: 36%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 340px; /* чуть больше плеера */
-    height: 520px;
     border-radius: 20px;
     pointer-events: none;
-    z-index: 99;
-    /* Настраиваемое свечение */
     box-shadow: 0 0 100px rgba(
         calc(var(--red-intensity) * 255), 
         calc(var(--green-intensity) * 255), 
@@ -429,4 +285,237 @@ body::after {
         0.5
     );
     transition: box-shadow 0.1s ease-out;
+}
+
+
+/* ==========================================================================
+   2. ДЕСКТОПНЫЕ СТИЛИ (Только для ПК, экраны шире 768px)
+   ========================================================================== */
+@media (min-width: 769px) {
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .cockpit-wrapper {
+        position: relative; 
+        display: inline-block;
+        line-height: 0;
+    }
+
+    .cockpit-image {
+        display: block;      
+        max-height: 100vh;   
+        max-width: 100vw;
+        width: auto;         
+        height: auto;
+    }
+
+    .player-container {
+        position: absolute;
+        top: 36%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 310px;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: center; 
+        align-items: center;
+        gap: 40px;               
+        position: relative; 
+        top: -25px;
+    }
+
+    .site-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    #radio-toggle {
+        position: absolute;
+        left: 40.5%; 
+        top: 78.5%;
+        width: 40px;
+        height: 26px;
+        margin-left: -20px; 
+        margin-top: -13px;
+        background: rgba(0, 0, 0, 0.3); 
+        border: 4px solid rgba(0, 255, 204, 1); 
+        border-radius: 4px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    #radio-toggle:hover {
+        background: rgba(0, 255, 204, 0.15);
+        border-color: rgb(248, 4, 4);
+        box-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+    }
+
+    #radio-toggle:active {
+        transform: scale(0.95);
+        background: rgba(0, 255, 204, 0.3);
+    }
+
+    #deck-display {
+        position: absolute;
+        left: 48.4%;
+        top: 73.3%;
+        font-family: 'Courier New', monospace;
+        font-size: 15px;
+        color: #00ffcc;
+        text-shadow: 0 0 8px #00ffcc;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    .music-visualizer-glow {
+        position: absolute;
+        top: 36%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 340px; 
+        height: 520px;
+        z-index: 99;
+    }
+}
+
+
+/* ==========================================================================
+   3. МОБИЛЬНЫЕ СТИЛИ (Только для смартфонов, экраны 768px и меньше)
+   ========================================================================== */
+@media (max-width: 768px) {
+    body {
+        display: flex !important;
+        flex-direction: column !important;   
+        justify-content: flex-start !important;
+        align-items: center !important;      /* Ровно по центру по горизонтали */
+        overflow-x: hidden !important;       
+        overflow-y: auto !important;         
+        height: auto !important;               
+        min-height: 100vh !important;
+        width: 100% !important;
+    }
+    
+    /* Скрываем всё лишнее барахло десктопа */
+    .cockpit-wrapper, #radio-toggle, #deck-display, .cockpit-interface, .cockpit-image {
+        display: none !important;
+    }
+    
+    body::before, body::after {
+        width: 280px;
+        height: 280px;
+        opacity: 0.4;
+    }
+
+    /* МОБИЛЬНЫЙ ПЛЕЕР: Обнуляем десктопное позиционирование на 100% */
+    .player-container {
+        position: relative !important; 
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        transform: none !important; 
+        
+        width: 90% !important;
+        max-width: 320px !important; 
+        margin: 40px auto 30px auto !important; /* Умное центрирование контейнера */
+        padding: 25px !important;               
+        background: rgba(7, 5, 9, 0.9) !important; 
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Возвращаем кнопки управления на место */
+    .controls {
+        position: relative !important;
+        top: 0 !important;                      
+        margin-top: 25px !important;            
+        margin-bottom: 5px !important;
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 25px !important;                   
+    }
+
+    /* Жесткая фиксация круглой кнопки Плей */
+    .btn-play {
+        width: 60px !important;
+        height: 60px !important;
+        min-width: 60px !important;             
+        min-height: 60px !important;            
+        flex-shrink: 0 !important;              
+        border-radius: 50% !important;          
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 0 !important;
+    }
+
+    .btn-nav {
+        flex-shrink: 0 !important;
+    }
+
+    .player-container:hover {
+        transform: none !important;
+        box-shadow: 0 0 15px rgba(0, 255, 204, 0.2) !important;
+    }
+    
+    .player-container:hover .cover-wrapper img {
+        transform: none !important;
+    }
+    
+    .cover-wrapper {
+        margin-bottom: 15px !important;
+        width: 100% !important;
+    }
+
+    /* Визуализатор на фоне мобилки */
+    .music-visualizer-glow {
+        position: fixed !important;             
+        top: 240px !important;                  
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 280px !important;
+        height: 440px !important;
+        z-index: -1 !important; 
+    }
+
+    /* МОБИЛЬНЫЙ ФУТЕР: Полный сброс десктопных привязок */
+    .site-footer {
+        position: static !important;          
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        
+        width: 100% !important;
+        margin-top: auto !important;   /* Прижимаем ко дну телефона */        
+        padding: 20px !important;        
+        flex-direction: row !important;       
+        justify-content: space-between !important;
+        align-items: center !important;
+        background: rgba(7, 5, 9, 0.95) !important;
+        box-sizing: border-box !important;
+    }
+
+    .footer-copyright {
+        font-size: 0.75rem !important;
+        text-align: left !important;
+    }
+
+    .footer-links {
+        gap: 15px !important;
+    }
 }
